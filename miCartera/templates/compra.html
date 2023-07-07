@@ -1,0 +1,51 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compra</title>
+    <link rel="stylesheet" href="/static/pico.css">
+    <link rel="stylesheet" href="/static/style.css">
+    
+</head>
+<body>
+    <header>
+        <p align="left">Mis criptos</p>
+    </header>
+    <nav class="container">
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/compra">Compra</a></li>
+            <li><a href="/status">Status</a></li>
+        </ul>
+
+    </nav>
+    <h1 align="center">Compra de criptos</h1>
+    <label for="from">From:</label>
+    <select id="from" name="from">
+        <option value="option1">Opción 1</option>
+        <option value="option2">Opción 2</option>
+        <option value="option3">Opción 3</option>
+    </select>
+
+    <label for="to">To:</label>
+    <select id="to" name="to">
+        <option value="option1">Opción 1</option>
+        <option value="option2">Opción 2</option>
+        <option value="option3">Opción 3</option>
+    </select>
+
+    <label for="amount">Cantidad:</label>
+    <input type="text" id="amount" name="amount">
+
+    <button type="button" id="submit">Enviar</button>
+
+    <div id="result"></div>
+
+    <button type="button" id="validate">Validar</button>
+
+    <footer>
+        <p align="left">&copy; 2023 - Todos los derechos reservados</p>
+    </footer>
+</body>
+</html>
