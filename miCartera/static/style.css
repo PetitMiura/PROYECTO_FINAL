@@ -1,0 +1,81 @@
+/* ESTILOS PARA CABECERA Y PIE DE PAGINA */
+header, footer {
+    background-color: #7ee256; /* Color de fondo */
+    padding: 10px; /* Relleno de 10 píxeles */
+    transition: background-color 0.3s ease; /* Transición suave del color de fondo */
+}
+
+header:hover, footer:hover {
+    background-color: #ff6b6b; /* Color de fondo rojo claro al pasar el cursor por encima */
+}
+
+header {
+    height: 10px; /* Altura del header de 10 píxeles */
+}
+
+footer {
+    height: 10px; /* Altura del footer de 10 píxeles */
+}
+
+/* ESTILO PARA EL MOVIMIENTO DEL TEXTO DE CABECERA Y PIE */
+@keyframes slide {
+    0% {
+        transform: translateX(0); /* Sin desplazamiento inicial */
+    }
+    100% {
+        transform: translateX(100%); /* Desplazamiento completo hacia la derecha */
+    }
+}
+
+header p, footer p {
+    color: white; /* Color del texto en blanco */
+    font-weight: bold; /* Texto en negrita */
+    font-size: 1.0em; /* Tamaño de fuente de 1.0 em */
+    animation: slide 7s linear 1; /* Animación de desplazamiento durante 7 segundos */
+}
+
+header p, footer p {
+    color: black; /* Color del texto en negro */
+    font-weight: bold; /* Texto en negrita */
+    font-size: 1.0em; /* Tamaño de fuente de 1.0 em */
+    animation: slide 7s linear 1; /* Animación de desplazamiento durante 7 segundos */
+}
+
+
+/* Estilos para el cuerpo del documento */
+body {
+    margin-top: 0px; /* Margen superior de 0 píxeles */
+    margin-bottom: 0px; /* Margen inferior de 0 píxeles */
+}
+
+/* Estilos para la tabla */
+table {
+    width: 100%; /* Ancho del 100% del contenedor */
+    border-collapse: collapse; /* Colapsar los bordes de las celdas */
+}
+
+/* Estilos para las celdas de encabezado y datos */
+th, td {
+    padding: 10px; /* Relleno de 10 píxeles */
+    text-align: center; /* Alineación centrada del texto */
+}
+
+/* Estilos para las celdas de encabezado */
+th {
+    background-color: #e6bf11; /* Color de fondo amarillo */
+    font-weight: bold; /* Texto en negrita */
+}
+
+/* Estilos para las filas */
+tr {
+    background-color: #e6bf11; /* Color de fondo amarillo */
+}
+
+/* Estilos para las filas al pasar el cursor por encima */
+tr:hover {
+    background-color: #7ee256; /* Color de fondo verde claro */
+}
+
+
+
+
