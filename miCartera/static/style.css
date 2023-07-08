@@ -77,5 +77,32 @@ tr:hover {
 }
 
 
+.disabled {
+    pointer-events: none;
+    opacity: 0.6;
 
+}
+/* Estilos para el contenedor del formulario */
+#form-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+/* Estilos para las columnas del formulario */
+.form-column {
+    flex: 1;
+    max-width: 200px; /* Cambia este valor para ajustar el ancho de los campos de texto */
+}
+
+/* Estilos para el contenedor de botones */
+#button-container {
+    display: flex;
+    justify-content: center;
+}
+
+/* Estilos para los botones dentro del contenedor de botones */
+#button-container button {
+    margin: 0 10px;
+}
 
