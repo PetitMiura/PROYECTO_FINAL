@@ -6,7 +6,7 @@ from .models import Movement, MovementsDAOsqlite
 from miCartera import app
 
 
-dao = MovementsDAOsqlite('movimientos.db')
+dao = MovementsDAOsqlite("PATH_SQLITE")
 
 @app.route('/', methods=['GET'])
 def index():
@@ -21,7 +21,7 @@ def purchase():
         moneda_to = request.form['to']
         
         # Consulta a la API de CoinAPI para obtener la tasa de conversión
-        apikey = app.config.get("FLASK_API_KEY")
+        apikey = app.config.get("API_KEY")
         url = f'https://rest.coinapi.io/v1/exchangerate/{moneda_from}/{moneda_to}?apikey={apikey}'
         response = requests.get(url)
         data = response.json()

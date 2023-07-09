@@ -31,6 +31,18 @@
             <th>QuantityTo</th>
             <th>PrecioUnidad</th>
         </tr>
+        {% for movement in movements %}
+        <tr>
+            <td>{{ movement.date }}</td>
+            <td>{{ movement.time }}</td>
+            <td>{{ movement.moneda_from }}</td>
+            <td> {{ movement.cantidad_from }}</td>
+            <td> {{ movement.moneda_to }}</td>
+            <td> {{ movement.cantidad_to }}</td>
+            <td> {{ movement.precio_unidad }}</td>
+        </tr>
+        {% endfor %}
+
         </table>
     </form>
     <section id="contenido">
