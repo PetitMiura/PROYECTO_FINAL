@@ -1,0 +1,55 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P.Final</title>
+    <link rel="stylesheet" href="/static/pico.css">
+    <link rel="stylesheet" href="/static/style.css">
+    
+</head>
+<body>
+    <header>
+        <p align="left">Mis criptos</p>
+    </header>
+    <nav class="container">
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/compra">Compra</a></li>
+            <li class="disabled"><a href="/status">Status</a></li>
+        </ul>
+
+    </nav>
+    <h1 align="center">ESTADO DE LA INVERSIÓN</h1>
+    <form>
+        <table class="container">
+            <tr>
+                <th>Moneda</th>
+                <th>Cantidad</th>
+                <th>Valor en euros</th>
+
+            </tr>
+            {% for movement in movements %}
+            <tr>
+                <td>{{ movement.moneda_from }}</td>
+                <td>{{ movement.quantity_from }}</td>
+                <td>{{ movement.moneda_from }}</td>
+
+            {% endfor %}
+        </table>        
+    </form>
+        <div class="container">
+        <div class="container1">
+            <p>Valor actual: <input type="text" id="valor-actual" /></p>
+            <p>Precio de compra: <input type="text" id="precio-compra" /></p>
+            <p>Resultado de la inversión: <input type="text" id="resultado-inversion" /></p>
+        </div>
+        </div>
+
+    <section id="contenido">
+
+    </section>
+    <footer>
+        <p align="left">&copy; 2023 - Todos los derechos reservados</p>
+    </footer>
+</body>
+</html>

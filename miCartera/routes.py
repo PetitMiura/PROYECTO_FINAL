@@ -45,3 +45,14 @@ def status():
     # Este es un cálculo más complejo que involucra sumar y restar las cantidades y consultar el valor actual de las criptomonedas.
     # No se ha proporcionado una implementación detallada aquí ya que esto requeriría un análisis más detallado de las necesidades del proyecto.
     return render_template('status.html', status=status)
+
+
+
+
+
+
+
+
+
+
+

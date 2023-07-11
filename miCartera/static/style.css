@@ -1,12 +1,12 @@
 /* ESTILOS PARA CABECERA Y PIE DE PAGINA */
 header, footer {
-    background-color: #7ee256; /* Color de fondo */
+    background-color: #4f84f5; /* Color de fondo */
     padding: 10px; /* Relleno de 10 píxeles */
     transition: background-color 0.3s ease; /* Transición suave del color de fondo */
 }
 
 header:hover, footer:hover {
-    background-color: #ff6b6b; /* Color de fondo rojo claro al pasar el cursor por encima */
+    background-color: #1a60e4; /* Color de fondo rojo claro al pasar el cursor por encima */
 }
 
 header {
@@ -106,3 +106,27 @@ tr:hover {
     margin: 50px 400px;
 }
 
+/* Estilos para el orden visual en status*/
+.container1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.container1 p {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.container1 p span {
+    margin-right: 10px;
+}
+
+/* Agregado de estilos para el botón de calcular conversión */
+#validate {
+    background-image: url("../templates/images/image.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    padding-left: 30px;
+}
