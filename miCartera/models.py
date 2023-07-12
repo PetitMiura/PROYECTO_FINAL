@@ -2,7 +2,7 @@ from datetime import datetime
 import sqlite3
 
 class Movement:
-    def __init__(self, id, date, time, moneda_from, cantidad_from, moneda_to, cantidad_to, precio_unidad):
+    def __init__(self, id, date, time, moneda_from, cantidad_from, moneda_to, cantidad_to):
         # Inicializa la clase Movement con sus atributos
         self.id = id
         self.date = date
@@ -11,7 +11,6 @@ class Movement:
         self.cantidad_from = cantidad_from
         self.moneda_to = moneda_to
         self.cantidad_to = cantidad_to
-        self.precio_unidad = precio_unidad
 
 
 class MovementsDAOsqlite:
@@ -28,7 +27,6 @@ class MovementsDAOsqlite:
             "cantidad_from"	REAL NOT NULL,
             "moneda_to"	TEXT NOT NULL,
             "cantidad_to"	REAL NOT NULL,
-            "precio_unidad" REAL NOT NULL,
             PRIMARY KEY("id" AUTOINCREMENT)
         );
         """
@@ -41,7 +39,7 @@ class MovementsDAOsqlite:
     def insert(self, movement):
         query = """
         INSERT INTO movements
-                (date, time, moneda_from, cantidad_from, moneda_to, cantidad_to, precio_unidad)
+                (date, time, moneda_from, cantidad_from, moneda_to, cantidad_to)
         VALUES  (?,?,?,?,?,?)
         """
         conn = sqlite3.connect(self.path)
@@ -49,14 +47,14 @@ class MovementsDAOsqlite:
 
         # Ejecuta la consulta de inserción con los valores del movimiento
         cur.execute(query, (movement.date, movement.time, movement.moneda_from,
-                            movement.cantidad_from, movement.moneda_to, movement.cantidad_to, movement.precio_unidad))
+                            movement.cantidad_from, movement.moneda_to, movement.cantidad_to))
 
         conn.commit()
         conn.close()
 
     def get(self, id):
         query = """
-        SELECT id, date, time, moneda_from, cantidad_from, moneda_to, cantidad_to, precio_unidad
+        SELECT id, date, time, moneda_from, cantidad_from, moneda_to, cantidad_to
         FROM movements
         WHERE id = ?;
         """
@@ -75,43 +73,16 @@ class MovementsDAOsqlite:
 
     def get_all(self):
         query = """
-        SELECT id, date, time, moneda_from, cantidad_from, moneda_to, cantidad_to, precio_unidad
-        FROM movements
+        SELECT id, date, time, moneda_from, cantidad_from, moneda_to, cantidad_to
+        FROM movements;
         """
         conn = sqlite3.connect(self.path)
         cur = conn.cursor()
 
-        cur.execute(query)
-        result = cur.fetchall()
+        res = cur.execute(query)
+        lista = []
+        for movement in res:
+            lista.append(Movement(*movement))       
+        #lista = [Movement(*reg) for reg in res], es la conversion de las 3 linias de arriba (list comprenhension) 
         conn.close()
-
-        # Return a list of Movement objects
-        return [Movement(*res) for res in result]
-
-    def update(self, movement):
-        query = """
-        UPDATE movements
-        SET date = ?, time = ?, moneda_from = ?, cantidad_from = ?, moneda_to = ?, cantidad_to = ?, precio_unidad = ?
-        WHERE id = ?
-        """
-        conn = sqlite3.connect(self.path)
-        cur = conn.cursor()
-
-        cur.execute(query, (movement.date, movement.time, movement.moneda_from,
-                            movement.cantidad_from, movement.moneda_to, movement.cantidad_to, movement.precio_unidad, movement.id))
-
-        conn.commit()
-        conn.close()
-
-    def delete(self, id):
-        query = """
-        DELETE FROM movements
-        WHERE id = ?
-        """
-        conn = sqlite3.connect(self.path)
-        cur = conn.cursor()
-
-        cur.execute(query, (id,))
-
-        conn.commit()
-        conn.close()
+        return lista

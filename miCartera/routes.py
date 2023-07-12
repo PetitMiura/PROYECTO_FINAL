@@ -1,17 +1,25 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import requests
 import sqlite3
 from datetime import datetime
 from .models import Movement, MovementsDAOsqlite
+from miCartera.forms import MovementForm
 from miCartera import app
 
 
-dao = MovementsDAOsqlite("PATH_SQLITE")
+dao = MovementsDAOsqlite(app.config.get("PATH_SQLITE"))
 
 @app.route('/', methods=['GET'])
 def index():
-    movements = dao.get_all()  # Obtener todos los movimientos de la base de datos
-    return render_template('index.html', movements=movements)
+    try:
+        movements = dao.get_all()  # Obtener todos los movimientos de la base de datos
+        print(movements)
+        the_form = MovementForm()  # Crear una instancia del formulario
+        return render_template('index.html', movements=movements, the_form=the_form)
+    except ValueError as e:
+        flash("Su aplicacion esta corrupta")
+        flash(str(e))
+        return render_template('index.html', movements=movements, the_form=the_form)
 
 @app.route('/compra', methods=['GET', 'POST'])
 def purchase():

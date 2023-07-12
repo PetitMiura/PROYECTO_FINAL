@@ -1,27 +1,10 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P.Final</title>
-    <link rel="stylesheet" href="/static/pico.css">
-    <link rel="stylesheet" href="/static/style.css">
-    
-</head>
-<body>
-    <header>
-        <p align="left">Mis criptos</p>
-    </header>
-    <nav class="container">
-        <ul>
-            <li class="disabled"><a href="/">Inicio</a></li>
-            <li><a href="/compra">Compra</a></li>
-            <li><a href="/status">Status</a></li>
-        </ul>
+{% extends "base.html" %}
+{% block content %}
 
-    </nav>
-    <h1 align="center">Mis transacciones</h1>
-    <form>
-        <table class="container">
+<h1 align="center">Mis transacciones</h1>
+<form>
+    {{ the_form.csrf_token }}
+    <table class="container">
         <tr>
             <th>Fecha</th>
             <th>Hora</th>
@@ -29,27 +12,24 @@
             <th>QuantityFrom</th>
             <th>To</th>
             <th>QuantityTo</th>
-            <th>PrecioUnidad</th>
         </tr>
-        {% for movement in movements %}
-        <tr>
-            <td>{{ movement.date }}</td>
-            <td>{{ movement.time }}</td>
-            <td>{{ movement.moneda_from }}</td>
-            <td> {{ movement.cantidad_from }}</td>
-            <td> {{ movement.moneda_to }}</td>
-            <td> {{ movement.cantidad_to }}</td>
-            <td> {{ movement.precio_unidad }}</td>
-        </tr>
-        {% endfor %}
+        {% if movements %}
+            {% for movement in movements %}
+            <tr>
+                <td>{{ movement.date }}</td>
+                <td>{{ movement.time }}</td>
+                <td>{{ movement.moneda_from }}</td>
+                <td>{{ movement.cantidad_from }}</td>
+                <td>{{ movement.moneda_to }}</td>
+                <td>{{ movement.cantidad_to }}</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="6" align="center">No hay movimientos todavía. Pulsa el link "Compra" para iniciar el juego</td>
+            </tr>
+        {% endif %}
+    </table>
+</form>
 
-        </table>
-    </form>
-    <section id="contenido">
-
-    </section>
-    <footer>
-        <p align="left">&copy; 2023 - Todos los derechos reservados</p>
-    </footer>
-</body>
-</html>
+{% endblock %}

@@ -6,6 +6,5 @@ CREATE TABLE IF NOT EXISTS "movements" (
             "cantidad_from"	REAL NOT NULL,
             "moneda_to"	TEXT NOT NULL,
             "cantidad_to"	REAL NOT NULL,
-            "precio_unidad" REAL NOT NULL,
             PRIMARY KEY("id" AUTOINCREMENT)
         );

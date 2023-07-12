@@ -16,6 +16,25 @@ header {
 footer {
     height: 10px; /* Altura del footer de 10 píxeles */
 }
+/* Ajusta la altura mínima del contenedor principal */
+main {
+    min-height: calc(100vh - 2.5rem - 3rem); /* Ajusta estos valores según sea necesario */
+    padding-bottom: 3rem; /* Ajusta este valor según sea necesario */
+}
+
+/* Estilos para el footer */
+footer {
+    position: fixed; /* Fija el footer en la parte inferior */
+    bottom: 0; /* Alinea el footer en la parte inferior */
+    left: 0; /* Alinea el footer a la izquierda */
+    width: 100%; /* Ancho completo del footer */
+    height: 3rem; /* Ajusta este valor según sea necesario */
+    background-color: #4f84f5; /* Color de fondo del footer */
+    padding: 10px; /* Espaciado interno del footer */
+    color: white; /* Color del texto del footer */
+    font-weight: bold; /* Texto en negrita del footer */
+    text-align: left; /* Alineación del texto a la izquierda del footer */
+}
 
 /* ESTILO PARA EL MOVIMIENTO DEL TEXTO DE CABECERA Y PIE */
 @keyframes slide {
@@ -124,7 +143,7 @@ tr:hover {
 
 /* Agregado de estilos para el botón de calcular conversión */
 #validate {
-    background-image: url("../templates/images/image.png");
+    background-image: url("/static/images/image.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
