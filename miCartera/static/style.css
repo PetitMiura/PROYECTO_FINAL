@@ -53,14 +53,6 @@ header p, footer p {
     animation: slide 7s linear 1; /* Animación de desplazamiento durante 7 segundos */
 }
 
-header p, footer p {
-    color: black; /* Color del texto en negro */
-    font-weight: bold; /* Texto en negrita */
-    font-size: 1.0em; /* Tamaño de fuente de 1.0 em */
-    animation: slide 7s linear 1; /* Animación de desplazamiento durante 7 segundos */
-}
-
-
 /* Estilos para el cuerpo del documento */
 body {
     margin-top: 0px; /* Margen superior de 0 píxeles */
@@ -103,8 +95,9 @@ tr:hover {
 }
 /* Estilos para el contenedor del formulario */
 #form-container {
-    display: flex;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
     margin-bottom: 20px;
 }
 
@@ -118,11 +111,12 @@ tr:hover {
 #button-container {
     display: flex;
     justify-content: center;
+    margin-top: 20px;
 }
 
 /* Estilos para los botones dentro del contenedor de botones */
 #button-container button {
-    margin: 50px 400px;
+    margin: 50px 50px;
 }
 
 /* Estilos para el orden visual en status*/
@@ -146,6 +140,7 @@ tr:hover {
     background-image: url("/static/images/image.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: contain;
+    background-size: cover;
     padding-left: 30px;
+
 }

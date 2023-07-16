@@ -1,77 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compra</title>
-    <link rel="stylesheet" href="/static/pico.css">
-    <link rel="stylesheet" href="/static/style.css">
-    
-</head>
-<body>
-    <header>
-        <p>Mis criptos</p>
-    </header>
-    <nav class="container">
-        <ul>
-            <li><a href="/">Inicio</a></li>
-            <li class="disabled"><a href="/compra">Compra</a></li>
-            <li><a href="/status">Status</a></li>
-        </ul>
-    </nav>
+<section class="container">
     <h1>Compra de criptos</h1>
+    <form action="/compra" method="post">
+        {{ form.csrf_token }}
     <div id="form-container">
         <div class="form-column">
-            <label for="from">From:</label>
-            <select id="from" name="from">
-                <option value="option1">EUR</option>
-                <option value="option2">BTC</option>
-                <option value="option3">ETH</option>
-                <option value="option4">BNB</option>
-                <option value="option5">ADA</option>
-                <option value="option6">DOT</option>
-                <option value="option7">XRP</option>
-                <option value="option8">SOL</option>
-                <option value="option9">USDT</option>
-                <option value="option10">MATIC</option>
-            </select>
+            {{ form.from_currency.label }}
+            {{ form.from_currency }}
             <label for="cantidad_from">Cantidad From:</label>
-            <input type="text" id="cantidad_from" name="cantidad_from">
+            {{ form.cantidad_from(class="form-control") }}
+            <div>
+                <button type="button" id="validate"></button>
+            </div>
         </div>
         <div class="form-column">
-            <label for="to">To:</label>
-            <select id="to" name="to">
-                <option value="option1">BTC</option>
-                <option value="option2">ETH</option>
-                <option value="option3">BNB</option>
-                <option value="option4">ADA</option>
-                <option value="option5">DOT</option>
-                <option value="option6">XRP</option>
-                <option value="option7">SOL</option>
-                <option value="option8">USDT</option>
-                <option value="option9">MATIC</option>
-                <option value="option10">EUR</option>
-            </select>
-            <label for="cantidad_to">Cantidad:</label>
-            <input type="text" id="cantidad_to" name="cantidad_to">
+            {{ form.to_currency.label }}
+            {{ form.to_currency(class="form-control") }}
+                <div>
+                    {{ form.cantidad_to.label }}
+                    {{ form.cantidad_to(class="form-control") }}
+                </div>
+                <div id="button-container">
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            
         </div>
     </div>
-    <div id="button-container">
-        <button type="button" id="validate"></button>
-        <button type="button" id="submit">✓</button>        
-    </div>
-    <div id="result"></div>
-    <footer>
-        <p>&copy; 2023 - Todos los derechos reservados</p>
-    </footer>
-</body>
-</html>
+    </form>
+</section>
 
-
-
-
-
-
-
-
-
+{% endblock %}

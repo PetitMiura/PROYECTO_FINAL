@@ -3,19 +3,17 @@ from wtforms import DateField, StringField, FloatField, SelectField, SubmitField
 from wtforms.validators import DataRequired, Length, ValidationError
 from datetime import date
 
-def date_le_today(form, field):
-    if field.data > date.today():
-        raise ValidationError("Must be lower than today")
-    
-
-class MovementForm(FlaskForm):
-    date = DateField("Fecha", validators=[DataRequired("La Fecha es obligatoria"), date_le_today])
-    time  = DateField("Hora",validators=[DataRequired("La hora es obligatoria")])
-    moneda_from = StringField("Concepto", validators=[DataRequired("Moneda obligatoria")])
-    cantidad_from = FloatField("Concepto", validators=[DataRequired("Cantidad obligatoria")])
-    moneda_to = StringField("Concepto", validators=[DataRequired("Moneda obligatoria")])
-    cantidad_to = FloatField("Concepto", validators=[DataRequired("Cantidad obligatoria")])   
 
 
-    submit = SubmitField("Enviar")
-
+class CompraForm(FlaskForm):
+    from_currency = SelectField('From:',choices=[('EUR', 'EUR'), ('BTC', 'BTC'), ('ETH', 'ETH'),
+                                                ('BNB', 'BNB'), ('ADA', 'ADA'), ('DOT', 'DOT'),
+                                                ('XRP', 'XRP'), ('SOL', 'SOL'), ('USDT', 'USDT'),
+                                                ('MATIC', 'MATIC')],validators=[DataRequired()])
+    cantidad_from = FloatField('Cantidad From:', validators=[DataRequired()])
+    to_currency = SelectField('To:',choices=[('EUR', 'EUR'), ('BTC', 'BTC'), ('ETH', 'ETH'),
+                                                ('BNB', 'BNB'), ('ADA', 'ADA'), ('DOT', 'DOT'),
+                                                ('XRP', 'XRP'), ('SOL', 'SOL'), ('USDT', 'USDT'),
+                                                ('MATIC', 'MATIC')], validators=[DataRequired()])
+    cantidad_to = FloatField('Cantidad:', validators=[DataRequired()])
+    submit = SubmitField('Enviar')
