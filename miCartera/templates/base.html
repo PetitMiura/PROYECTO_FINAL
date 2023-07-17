@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P.Final</title>
+    <title>P.Final - {{ title }}</title>
     <link rel="stylesheet" href="/static/pico.css">
     <link rel="stylesheet" href="/static/style.css">
 </head>
@@ -11,11 +11,10 @@
         <p align="left">Mis criptos</p>
     </header>
     <nav class="container">
-        <ul>
-            
-            <li class="disabled"><a href="/">Inicio</a></li>
-            <li><a href="/compra">Compra</a></li>
-            <li><a href="/status">Status</a></li>
+        <ul>            
+            <li><a href="/" {% if route == "/" %} class="disabled" {% endif %}>Inicio</a></li>
+            <li><a href="/compra" {% if route == "/compra" %} class="disabled" {% endif %}>Compra</a></li>
+            <li><a href="/status" {% if route == "/status" %} class="disabled" {% endif %}>Status</a></li>
         </ul>
     </nav>
 

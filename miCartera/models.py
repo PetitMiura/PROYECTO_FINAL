@@ -62,7 +62,7 @@ class MovementsDAOsqlite:
         cur = conn.cursor()
 
         # Ejecuta la consulta de selección con el ID proporcionado
-        cur.execute(query, (id,))
+        cur.execute(query)
         res = cur.fetchone()
         conn.close()
 

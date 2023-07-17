@@ -9,22 +9,23 @@
         <div class="form-column">
             {{ form.from_currency.label }}
             {{ form.from_currency }}
-            <label for="cantidad_from">Cantidad From:</label>
-            {{ form.cantidad_from(class="form-control") }}
-            <div>
-                <button type="button" id="validate"></button>
-            </div>
+            {{ form.cantidad_from.label}}
+            {{ form.cantidad_from }}
+            
+            {{ form.calculate }}
+            
         </div>
         <div class="form-column">
             {{ form.to_currency.label }}
-            {{ form.to_currency(class="form-control") }}
-                <div>
-                    {{ form.cantidad_to.label }}
-                    {{ form.cantidad_to(class="form-control") }}
-                </div>
-                <div id="button-container">
-                    {{ form.submit(class="btn btn-primary") }}
-                </div>
+            {{ form.to_currency }}
+                
+            {% if form.cantidad_to.data %}
+            <p>Cantidad: {{ form.cantidad_to.data }} - {{ form.to_currency.data }}</p>
+            {% endif %}
+                
+                
+            {{ form.submit(class="btn btn-primary") }}
+                
             
         </div>
     </div>
@@ -32,3 +33,8 @@
 </section>
 
 {% endblock %}
+
+
+
+
+
