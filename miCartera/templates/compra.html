@@ -5,6 +5,8 @@
     <h1>Compra de criptos</h1>
     <form action="/compra" method="post">
         {{ form.csrf_token }}
+        {{ form.cantidad_to }}
+        
     <div id="form-container">
         <div class="form-column">
             {{ form.from_currency.label }}

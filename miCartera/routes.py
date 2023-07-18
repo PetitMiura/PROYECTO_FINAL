@@ -8,6 +8,8 @@ from miCartera import app
 
 
 dao = MovementsDAOsqlite(app.config.get("PATH_SQLITE"))
+  
+
 
 @app.route('/', methods=['GET'])
 def index():
@@ -22,12 +24,7 @@ def index():
 
 @app.route('/compra', methods=['GET', 'POST'])
 def purchase():
-    form = CompraForm()
-    moneda_from = ''
-    cantidad_from = 0
-    moneda_to = ''
-    cantidad_to = 0
-    
+    form = CompraForm()     
     if request.method == 'GET':
         return render_template('compra.html', form=form, route=request.path, title='Compra')
     elif form.calculate.data:
@@ -51,10 +48,14 @@ def purchase():
 
     else:
         # Crea y guarda el nuevo movimiento
-        movement = Movement(None, datetime.now().strftime('%Y-%m-%d'), datetime.now().strftime('%H:%M:%S'), moneda_from, cantidad_from, moneda_to, cantidad_to)
+        movement = Movement(None, datetime.now().strftime('%Y-%m-%d'), datetime.now().strftime('%H:%M:%S'), form.from_currency.data, form.cantidad_from.data, form.to_currency.data,form.cantidad_to.data)
         dao.insert(movement)
 
-        return redirect('/')
+           
+
+
+
+    return redirect('/')
         
 @app.route('/status', methods=['GET'])
 def status():
@@ -63,8 +64,6 @@ def status():
     # Este es un cálculo más complejo que involucra sumar y restar las cantidades y consultar el valor actual de las criptomonedas.
     # No se ha proporcionado una implementación detallada aquí ya que esto requeriría un análisis más detallado de las necesidades del proyecto.
     return render_template('status.html', status=status, movements=movements, route=request.path, title='Status')
-
-
 
 
 

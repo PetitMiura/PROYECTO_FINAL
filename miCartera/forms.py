@@ -3,7 +3,8 @@ from wtforms import DateField, StringField, FloatField, SelectField, SubmitField
 from wtforms.validators import DataRequired, Length, ValidationError
 from datetime import date
 
-
+def compra_validations():
+    pass
 
 class CompraForm(FlaskForm):
     from_currency = SelectField('From:', choices=[('EUR', 'Euros'), ('BTC', 'BTC'), ('ETH', 'ETH'),
@@ -19,3 +20,5 @@ class CompraForm(FlaskForm):
     calculate = SubmitField('calcular')
     submit = SubmitField('Enviar')
     
+
+
