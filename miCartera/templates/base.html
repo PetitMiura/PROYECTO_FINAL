@@ -17,7 +17,15 @@
             <li><a href="/status" {% if route == "/status" %} class="disabled" {% endif %}>Status</a></li>
         </ul>
     </nav>
-
+    {% with msgs = get_flashed_messages() %} <!-- recoge los mensages que hay en flash-->
+    {% if msgs %} <!--si hay un mensage se verá el contenido que tenemos dentro-->
+        <div class="container" id="msg-error">
+            {% for msg in msgs %}<!-- recorremos los mensages y los imprimimos-->
+                <p>{{msg}}</p>
+            {% endfor %}    
+        </div>
+    {% endif %}
+    {% endwith %}
     <main>
         {% block content %}
         {% endblock %}

@@ -6,6 +6,8 @@
     <form action="/compra" method="post">
         {{ form.csrf_token }}
         {{ form.cantidad_to }}
+
+
         
     <div id="form-container">
         <div class="form-column">
@@ -22,7 +24,7 @@
             {{ form.to_currency }}
                 
             {% if form.cantidad_to.data %}
-            <p>Cantidad: {{ form.cantidad_to.data }} - {{ form.to_currency.data }}</p>
+                <p>Cantidad: {{ form.cantidad_to.data }} - {{ form.to_currency.data }}</p>
             {% endif %}
                 
                 
@@ -35,8 +37,5 @@
 </section>
 
 {% endblock %}
-
-
-
 
 
