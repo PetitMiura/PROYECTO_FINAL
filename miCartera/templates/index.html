@@ -1,34 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1 align="center">Mis transacciones</h1>
-<form>
-    <table class="container">
-        <tr>
-            <th>Fecha</th>
-            <th>Hora</th>
-            <th>From</th>
-            <th>QuantityFrom</th>
-            <th>To</th>
-            <th>QuantityTo</th>
-        </tr>
-        {% if movements %}
-            {% for movement in movements %}
+<body>
+    <h1 align="center">Mis transacciones</h1>
+    <form>
+        <table class="container">
             <tr>
-                <td>{{ movement.date }}</td>
-                <td>{{ movement.time }}</td>
-                <td>{{ movement.moneda_from }}</td>
-                <td>{{ movement.cantidad_from }}</td>
-                <td>{{ movement.moneda_to }}</td>
-                <td>{{ movement.cantidad_to }}</td>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>From</th>
+                <th>QuantityFrom</th>
+                <th>To</th>
+                <th>QuantityTo</th>
             </tr>
-            {% endfor %}
-        {% else %}
-            <tr>
-                <td colspan="6" align="center">No hay movimientos todavía. Pulsa el link "Compra" para iniciar el juego</td>
-            </tr>
-        {% endif %}
-    </table>
-</form>
-
+            {% if movements %}
+                {% for movement in movements %}
+                <tr>
+                    <td>{{ movement.date }}</td>
+                    <td>{{ movement.time }}</td>
+                    <td>{{ movement.moneda_from }}</td>
+                    <td>{{ movement.cantidad_from }}</td>
+                    <td>{{ movement.moneda_to }}</td>
+                    <td>{{ movement.cantidad_to }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="6" align="center">No hay movimientos todavía. Pulsa el link "Compra" para iniciar el juego</td>
+                </tr>
+            {% endif %}
+        </table>
+    </form>
+</body>
 {% endblock %}

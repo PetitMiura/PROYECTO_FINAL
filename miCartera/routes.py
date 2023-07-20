@@ -25,7 +25,12 @@ def purchase():
     form = CompraForm()
 
     if request.method == 'GET':
+        session['from_currency'] = ""
+        session['cantidad_from'] = 0
+        session['to_currency'] = ""
+        session['cantidad_to'] = 0
         return render_template('compra.html', form=form, route=request.path, title='Compra')
+    
 
     elif form.calculate.data:
         try:
@@ -38,20 +43,25 @@ def purchase():
                 url = f'https://rest.coinapi.io/v1/exchangerate/{moneda_from}/{moneda_to}?apikey={app.config.get("API_KEY")}'
                 response = requests.get(url)
                 data = response.json()
+                if response.status_code == 200:
 
-                if 'rate' in data:
-                    rate = data['rate']
-                    cantidad_to = cantidad_from * rate  # Calcula la cantidad_to basada en la tasa de conversión
-                    form.cantidad_to.data = cantidad_to  # Asigna el valor calculado a form.cantidad_to.data
+                    if 'rate' in data:
+                        rate = data['rate']
+                        cantidad_to = cantidad_from * rate  # Calcula la cantidad_to basada en la tasa de conversión
+                        form.cantidad_to.data = cantidad_to  # Asigna el valor calculado a form.cantidad_to.data
 
-                    # Almacenar los datos del primer POST en la sesión
-                    session['from_currency'] = moneda_from
-                    session['cantidad_from'] = cantidad_from
-                    session['to_currency'] = moneda_to
-                    session['cantidad_to'] = cantidad_to  # Almacena también cantidad_to en la sesión
+                        # Almacenar los datos del primer POST en la sesión
+                        session['from_currency'] = moneda_from
+                        session['cantidad_from'] = cantidad_from
+                        session['to_currency'] = moneda_to
+                        session['cantidad_to'] = cantidad_to  # Almacena también cantidad_to en la sesión
+                        # Renderiza la plantilla "compra.html" con el formulario actualizado y la cantidad convertida en el contexto
+                        return render_template('compra.html', form=form, route=request.path, title='Compra')
+                else:
+                    flash(data["error"])
+                    return render_template('compra.html', form=form, route=request.path, title='Compra')
 
-            # Renderiza la plantilla "compra.html" con el formulario actualizado y la cantidad convertida en el contexto
-            return render_template('compra.html', form=form, route=request.path, title='Compra')
+
 
         except ValueError as e:
             flash(str(e))

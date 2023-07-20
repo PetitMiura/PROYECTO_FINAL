@@ -64,11 +64,16 @@ table {
     width: 100%; /* Ancho del 100% del contenedor */
     border-collapse: collapse; /* Colapsar los bordes de las celdas */
 }
+/* Estilos para las filas */
+tr {
+    background-color: #bda953; /* Color de fondo amarillo */
+}
 
 /* Estilos para las celdas de encabezado y datos */
 th, td {
     padding: 10px; /* Relleno de 10 píxeles */
     text-align: center; /* Alineación centrada del texto */
+
 }
 
 /* Estilos para las celdas de encabezado */
@@ -77,10 +82,7 @@ th {
     font-weight: bold; /* Texto en negrita */
 }
 
-/* Estilos para las filas */
-tr {
-    background-color: #e6bf11; /* Color de fondo amarillo */
-}
+
 
 /* Estilos para las filas al pasar el cursor por encima */
 tr:hover {
@@ -143,4 +145,21 @@ tr:hover {
     background-size: cover;
     padding-left: 30px;
 
+}
+
+body {
+    background-image: url("/static/images/fondo5.png");
+    /* Ajustar la imagen de fondo */
+    background-size: auto;
+    background-position: center;
+    background-repeat: repeat-x;
+    
+
+  }
+
+h1 {
+    color: #39e903; /* Color del texto */
+    font-size: 48px; /* Tamaño de fuente */
+    font-weight: bold; /* Texto en negrita */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra de texto */
 }

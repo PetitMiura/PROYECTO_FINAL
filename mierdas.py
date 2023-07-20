@@ -10,3 +10,5 @@
         # Comprobar si los datos del campo cantidad_to coinciden con los almacenados en la sesión
         if field.data != session['cantidad_to']:
             raise ValidationError('No se permiten cambios después de calcular.')
+        
+

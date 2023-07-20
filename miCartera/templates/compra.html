@@ -1,40 +1,42 @@
 {% extends "base.html" %}
 {% block content %}
 
-<section class="container">
-    <h1>Compra de criptos</h1>
-    <form action="/compra" method="post">
-        {{ form.csrf_token }}
-        {{ form.cantidad_to }}
+<body>
+    <section class="container">
+        <h1>Compra de criptos</h1>
+        <form action="/compra" method="post">
+            {{ form.csrf_token }}
+            {{ form.cantidad_to }}
 
 
-        
-    <div id="form-container">
-        <div class="form-column">
-            {{ form.from_currency.label }}
-            {{ form.from_currency }}
-            {{ form.cantidad_from.label}}
-            {{ form.cantidad_from }}
             
-            {{ form.calculate }}
-            
+        <div id="form-container">
+            <div class="form-column">
+                {{ form.from_currency.label }}
+                {{ form.from_currency }}
+                {{ form.cantidad_from.label}}
+                {{ form.cantidad_from }}
+                
+                {{ form.calculate }}
+                
+            </div>
+            <div class="form-column">
+                {{ form.to_currency.label }}
+                {{ form.to_currency }}
+                    
+                {% if form.cantidad_to.data %}
+                    <p>Cantidad: {{ form.cantidad_to.data }} - {{ form.to_currency.data }}</p>
+                {% endif %}
+                    
+                    
+                {{ form.submit(class="btn btn-primary") }}
+                    
+                
+            </div>
         </div>
-        <div class="form-column">
-            {{ form.to_currency.label }}
-            {{ form.to_currency }}
-                
-            {% if form.cantidad_to.data %}
-                <p>Cantidad: {{ form.cantidad_to.data }} - {{ form.to_currency.data }}</p>
-            {% endif %}
-                
-                
-            {{ form.submit(class="btn btn-primary") }}
-                
-            
-        </div>
-    </div>
-    </form>
-</section>
+        </form>
+    </section>
+</body>
 
 {% endblock %}
 
