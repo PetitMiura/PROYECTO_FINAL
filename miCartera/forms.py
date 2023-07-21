@@ -5,18 +5,18 @@ from datetime import date
 
 
 
+
 # Valores diferentes en los SelectFields
 def validate_different_values(form, field):
-    # Obtiene el valor seleccionado en el campo "from_currency"
-    from_currency = form.from_currency.data
-
-    # Obtiene el valor seleccionado en el campo "to_currency"
-    to_currency = field.data
-
     # Verifica si los valores son iguales y si lo son, lanza una excepción
-    if from_currency == to_currency:
+    if form.from_currency.data == field.data:
         raise ValidationError('Los campos "From" y "To" deben ser diferentes.')
-
+#cantidad from
+def cfrom(form, field):
+    # Menor a cero no es válido
+    if field.data <= 0:
+        raise ValidationError('La cantidad debe ser mayor que cero.')
+         
 
 # moneda from
 def mfrom(form, field):
@@ -29,12 +29,7 @@ def mto(form, field):
     if field.data not in valid_options:
         raise ValidationError('Moneda "To" inválida.')
 
-#cantidad from
-def cfrom(form, field):
-    # Menor a cero no es válido
-    if field.data <= 0:
-        raise ValidationError('La cantidad debe ser mayor que cero.')
-         
+
 
 class CompraForm(FlaskForm):
 
@@ -46,7 +41,7 @@ class CompraForm(FlaskForm):
     to_currency = SelectField('To:', choices=[('EUR', 'EUR'), ('BTC', 'BTC'), ('ETH', 'ETH'),
                                                 ('BNB', 'BNB'), ('ADA', 'ADA'), ('DOT', 'DOT'),
                                                 ('XRP', 'XRP'), ('SOL', 'SOL'), ('USDT', 'USDT'),
-                                                ('MATIC', 'MATIC')], validators=[DataRequired(), mto])
+                                                ('MATIC', 'MATIC')], validators=[DataRequired(), mto, validate_different_values])
     cantidad_to = HiddenField()
     calculate = SubmitField('calcular')
     submit = SubmitField('Enviar')

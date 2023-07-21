@@ -60,7 +60,9 @@ def purchase():
                 else:
                     flash(data["error"])
                     return render_template('compra.html', form=form, route=request.path, title='Compra')
-
+            else:
+                flash("¿Monedas iguales? ¿Cantidad menor o igual a 0 / letras? Intentalo de nuevo...")
+                return render_template('compra.html', form=form, route=request.path, title='Compra')
 
 
         except ValueError as e:
@@ -92,20 +94,62 @@ def purchase():
 
     return redirect('/')
 
-        
+
+
+
+
+
+
 @app.route('/status', methods=['GET'])
 def status():
+    # Obtener todos los movimientos de la base de datos
+    movements = dao.get_all()
 
-    movements = dao.get_all()  # Obtener todos los movimientos de la base de datos
-    # Aquí se debería calcular el estado de la inversión basándose en los movimientos
-    # Este es un cálculo más complejo que involucra sumar y restar las cantidades y consultar el valor actual de las criptomonedas.
-    # No se ha proporcionado una implementación detallada aquí ya que esto requeriría un análisis más detallado de las necesidades del proyecto.
-    return render_template('status.html', status=status, movements=movements, route=request.path, title='Status')
+    # Calcular los totales y conversiones para cada criptomoneda
+    total_cryptos = {}  # Diccionario para almacenar los totales de cada criptomoneda
 
+    for movement in movements:
+        moneda_to = movement.moneda_to
+        cantidad_to = movement.cantidad_to
 
+        if moneda_to in total_cryptos:
+            total_cryptos[moneda_to] += cantidad_to
+        else:
+            total_cryptos[moneda_to] = cantidad_to
 
+    # Obtener la clave de API de CoinAPI desde la configuración de la aplicación
+    api_key = app.config.get("API_KEY")
 
+    # Realizar llamada a la API para obtener los valores de conversión en euros
+    conversion_euros = {}
+    for moneda in total_cryptos.keys():
+        if moneda == 'EUR':
+            conversion_euros[moneda] = 1.0  # El valor de 1 euro en euros es 1.0 (1 euro)
+        else:
+            # Hacer la llamada a la API para obtener el valor de conversión de la criptomoneda a euros
+            url = f'https://rest.coinapi.io/v1/exchangerate/{moneda}/EUR?apikey={api_key}'
+            response = requests.get(url)
+            data = response.json()
 
+            if response.status_code == 200 and 'rate' in data:
+                conversion_euros[moneda] = data['rate']
+            else:
+                # En caso de error, asignamos un valor de conversión predeterminado (puedes modificarlo)
+                conversion_euros[moneda] = 1.0
+
+    # Crear una lista de tuplas con la información de cada criptomoneda y sus totales y conversiones
+    data_cryptos = []
+    for moneda, total in total_cryptos.items():
+        if moneda in conversion_euros:
+            conversion = total * conversion_euros[moneda]
+            data_cryptos.append((moneda, total, conversion))
+
+    
+    # Calcular el valor total de la inversión en euros
+    total_inversion = sum(valor_en_euros for _, _, valor_en_euros in data_cryptos)
+
+    # Renderizar la plantilla 'status.html' con la información calculada
+    return render_template('status.html', data_cryptos=data_cryptos, total_inversion=total_inversion, route=request.path, title='Status')
 
 
 

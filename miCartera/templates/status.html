@@ -9,26 +9,23 @@
                     <th>Moneda</th>
                     <th>Cantidad</th>
                     <th>Valor en euros</th>
-
                 </tr>
-                {% for movement in movements %}
+                {% for data_crypto in data_cryptos %}
                 <tr>
-                    <td>{{ movement.moneda_from }}</td>
-                    <td>{{ movement.quantity_from }}</td>
-                    <td>{{ movement.moneda_from }}</td>
-
+                    <td>{{ data_crypto[0] }}</td>
+                    <td>{{ data_crypto[1] }}</td>
+                    <td>{{ data_crypto[2]|round(2) }}</td>
                 {% endfor %}
-            </table>        
+            </table>
         </form>
-            <div class="container">
+        <div class="container">
             <div class="container1">
-                <p>Valor actual: <input type="text" id="valor-actual" /></p>
-                <p>Precio de compra: <input type="text" id="precio-compra" /></p>
-                <p>Resultado de la inversión: <input type="text" id="resultado-inversion" /></p>
+                <p>Valor total de la inversión en euros: {{ total_inversion }}</p>
+                <p>Precio de compra: {{ porcentaje_cambio }}%</p>
+                <p>Resultado de la inversión: ...</p>
             </div>
-            </div>
+        </div>
     </section>
 
-
-
 {% endblock %}
+
