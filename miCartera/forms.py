@@ -4,8 +4,6 @@ from wtforms.validators import DataRequired, Length, ValidationError
 from datetime import date
 
 
-
-
 # Valores diferentes en los SelectFields
 def validate_different_values(form, field):
     # Verifica si los valores son iguales y si lo son, lanza una excepción
@@ -37,7 +35,7 @@ class CompraForm(FlaskForm):
                                                 ('BNB', 'BNB'), ('ADA', 'ADA'), ('DOT', 'DOT'),
                                                 ('XRP', 'XRP'), ('SOL', 'SOL'), ('USDT', 'USDT'),
                                                 ('MATIC', 'MATIC')],validators=[DataRequired(), mfrom])
-    cantidad_from = FloatField('Cantidad From:', validators=[DataRequired(), cfrom])
+    cantidad_from = FloatField('Cantidad From:', validators=[cfrom, DataRequired()])
     to_currency = SelectField('To:', choices=[('EUR', 'EUR'), ('BTC', 'BTC'), ('ETH', 'ETH'),
                                                 ('BNB', 'BNB'), ('ADA', 'ADA'), ('DOT', 'DOT'),
                                                 ('XRP', 'XRP'), ('SOL', 'SOL'), ('USDT', 'USDT'),
