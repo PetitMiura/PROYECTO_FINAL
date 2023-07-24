@@ -10,19 +10,25 @@
                     <th>Cantidad</th>
                     <th>Valor en euros</th>
                 </tr>
-                {% for data_crypto in data_cryptos %}
-                <tr>
-                    <td>{{ data_crypto[0] }}</td>
-                    <td>{{ data_crypto[1] }}</td>
-                    <td>{{ data_crypto[2] }}</td>
-                {% endfor %}
+                {% if data_cryptos %}
+                    {% for data_crypto in data_cryptos %}
+                        <tr>
+                            <td>{{ data_crypto[0] }}</td>
+                            <td>{{ data_crypto[1] }}</td>
+                            <td>{{ data_crypto[2] }}</td>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" align="center">No hay movimientos todavía. Pulsa el link "Compra" para iniciar el juego</td>
+                    </tr>
+                {% endif %}
             </table>
         </form>
         <div class="container">
             <div class="container1">
                 <p>Valor total de la inversión en euros: {{ total_inversion }}</p>
-                <p>Precio de compra: {{ porcentaje_cambio }}%</p>
-                <p>Resultado de la inversión: ...</p>
+                <p>Precio de compra: {{ precio_compra }}</p>
+                <p>Resultado de la inversión: {{ resultado_inversion }}</p>
             </div>
         </div>
     </section>

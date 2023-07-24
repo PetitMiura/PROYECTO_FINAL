@@ -35,12 +35,12 @@ class CompraForm(FlaskForm):
                                                 ('BNB', 'BNB'), ('ADA', 'ADA'), ('DOT', 'DOT'),
                                                 ('XRP', 'XRP'), ('SOL', 'SOL'), ('USDT', 'USDT'),
                                                 ('MATIC', 'MATIC')],validators=[DataRequired(), mfrom])
-    cantidad_from = FloatField('Cantidad From:', validators=[cfrom, DataRequired()])
+    cantidad_from = FloatField('Cantidad From:', validators=[cfrom, DataRequired('Letras o Cantidad <= 0 no permitidas en el campo cantidad')])
     to_currency = SelectField('To:', choices=[('EUR', 'EUR'), ('BTC', 'BTC'), ('ETH', 'ETH'),
                                                 ('BNB', 'BNB'), ('ADA', 'ADA'), ('DOT', 'DOT'),
                                                 ('XRP', 'XRP'), ('SOL', 'SOL'), ('USDT', 'USDT'),
                                                 ('MATIC', 'MATIC')], validators=[DataRequired(), mto, validate_different_values])
     cantidad_to = HiddenField()
     calculate = SubmitField('calcular')
-    submit = SubmitField('Enviar')
+    submit = SubmitField('✔')
 

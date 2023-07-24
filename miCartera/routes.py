@@ -7,6 +7,7 @@ from miCartera.forms import CompraForm
 from miCartera import app
 
 
+
 dao = MovementsDAOsqlite(app.config.get("PATH_SQLITE"))
 
 @app.route('/', methods=['GET'])
@@ -16,7 +17,7 @@ def index():
         form = CompraForm()  # Crear una instancia del formulario
         return render_template('index.html', movements=movements, route=request.path, title='Index')
     except ValueError as e:
-        flash("Su aplicacion esta corrupta")
+        flash('Su base de datos esta inoperativa')
         flash(str(e))
         return render_template('index.html', movements=movements, route=request.path, title='Index')
 
@@ -61,7 +62,8 @@ def purchase():
                     flash(data["error"])
                     return render_template('compra.html', form=form, route=request.path, title='Compra')
             else:
-                flash("¿Monedas iguales? ¿Cantidad menor o igual a 0 / letras? Intentalo de nuevo...")
+                for msg, valor in form.errors.items():
+                    flash(valor[0])
                 return render_template('compra.html', form=form, route=request.path, title='Compra')
 
 
@@ -109,8 +111,11 @@ def status():
     total_cryptos = {}  # Diccionario para almacenar los totales de cada criptomoneda
 
     for movement in movements:
-        moneda_to = movement.moneda_to
-        cantidad_to = movement.cantidad_to
+        if movement.moneda_to == 'EUR':
+            pass
+        else:
+            moneda_to = movement.moneda_to
+            cantidad_to = movement.cantidad_to
 
         if moneda_to in total_cryptos:
             total_cryptos[moneda_to] += cantidad_to
@@ -124,7 +129,7 @@ def status():
     conversion_euros = {}
     for moneda in total_cryptos.keys():
         if moneda == 'EUR':
-            conversion_euros[moneda] = 1.0  # El valor de 1 euro en euros es 1.0 (1 euro)
+            conversion_euros[moneda] = 1.0  # El valor de 1 euro en euros es 1.0 (1 euro) y me ahorro hacer una llamada a la api ;)
         else:
             # Hacer la llamada a la API para obtener el valor de conversión de la criptomoneda a euros
             url = f'https://rest.coinapi.io/v1/exchangerate/{moneda}/EUR?apikey={api_key}'
@@ -135,21 +140,26 @@ def status():
                 conversion_euros[moneda] = data['rate']
             else:
                 # En caso de error, asignamos un valor de conversión predeterminado (puedes modificarlo)
-                conversion_euros[moneda] = 1.0
+                flash("Error")
 
     # Crear una lista de tuplas con la información de cada criptomoneda y sus totales y conversiones
     data_cryptos = []
+    total_inversion = 0
     for moneda, total in total_cryptos.items():
-        if moneda in conversion_euros:
-            conversion = total * conversion_euros[moneda]
+        if moneda in conversion_euros and moneda != 'EUR':
+            conversion = total * float(conversion_euros[moneda])
             data_cryptos.append((moneda, total, conversion))
 
     
     # Calcular el valor total de la inversión en euros
-    total_inversion = sum(valor_en_euros for _, _, valor_en_euros in data_cryptos)
+
+    for value in data_cryptos:
+        total_inversion += conversion 
+    
+    
 
     # Renderizar la plantilla 'status.html' con la información calculada
-    return render_template('status.html', data_cryptos=data_cryptos, total_inversion=total_inversion, route=request.path, title='Status')
+    return render_template('status.html', data_cryptos=data_cryptos, conversion_euros=conversion_euros, total_inversion=total_inversion, route=request.path, title='Status')
 
 
 

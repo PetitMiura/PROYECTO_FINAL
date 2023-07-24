@@ -1,5 +1,7 @@
 from datetime import datetime
-import sqlite3
+import sqlite3, requests
+
+
 
 class Movement:
     def __init__(self, id, date, time, moneda_from, cantidad_from, moneda_to, cantidad_to):
@@ -86,3 +88,8 @@ class MovementsDAOsqlite:
         #lista = [Movement(*reg) for reg in res], es la conversion de las 3 linias de arriba (list comprenhension) 
         conn.close()
         return lista
+    
+
+
+
+

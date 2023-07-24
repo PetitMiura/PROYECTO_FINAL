@@ -12,3 +12,27 @@
             raise ValidationError('No se permiten cambios después de calcular.')
         
 
+def get_conversion_euros():
+    # Establecer la conexión a la base de datos
+    conn = sqlite3.connect('data/movements.db')
+    cursor = conn.cursor()
+
+    # Consulta para obtener la cantidad total de cada criptomoneda en euros
+    query = """
+    SELECT moneda_to, SUM(cantidad_to) AS total_euros
+    FROM movements
+    WHERE moneda_to != 'EUR'
+    GROUP BY moneda_to
+    """
+
+    # Ejecutar la consulta
+    cursor.execute(query)
+
+    # Obtener los resultados de la consulta
+    conversion_euros = {moneda: total for moneda, total in cursor.fetchall()}
+
+    # Cerrar la conexión a la base de datos
+    cursor.close()
+    conn.close()
+
+    return conversion_euros
