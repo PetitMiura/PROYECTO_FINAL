@@ -104,63 +104,20 @@ def purchase():
 
 @app.route('/status', methods=['GET'])
 def status():
-    # Obtener todos los movimientos de la base de datos
-    movements = dao.get_all()
-
-    # Calcular los totales y conversiones para cada criptomoneda
-    total_cryptos = {}  # Diccionario para almacenar los totales de cada criptomoneda
-
-    for movement in movements:
-        if movement.moneda_to == 'EUR':
-            pass
-        else:
-            moneda_to = movement.moneda_to
-            cantidad_to = movement.cantidad_to
-
-        if moneda_to in total_cryptos:
-            total_cryptos[moneda_to] += cantidad_to
-        else:
-            total_cryptos[moneda_to] = cantidad_to
-
-    # Obtener la clave de API de CoinAPI desde la configuración de la aplicación
-    api_key = app.config.get("API_KEY")
-
-    # Realizar llamada a la API para obtener los valores de conversión en euros
-    conversion_euros = {}
-    for moneda in total_cryptos.keys():
-        if moneda == 'EUR':
-            conversion_euros[moneda] = 1.0  # El valor de 1 euro en euros es 1.0 (1 euro) y me ahorro hacer una llamada a la api ;)
-        else:
-            # Hacer la llamada a la API para obtener el valor de conversión de la criptomoneda a euros
-            url = f'https://rest.coinapi.io/v1/exchangerate/{moneda}/EUR?apikey={api_key}'
-            response = requests.get(url)
-            data = response.json()
-
-            if response.status_code == 200 and 'rate' in data:
-                conversion_euros[moneda] = data['rate']
-            else:
-                # En caso de error, asignamos un valor de conversión predeterminado (puedes modificarlo)
-                flash("Error")
-
-    # Crear una lista de tuplas con la información de cada criptomoneda y sus totales y conversiones
-    data_cryptos = []
-    total_inversion = 0
-    for moneda, total in total_cryptos.items():
-        if moneda in conversion_euros and moneda != 'EUR':
-            conversion = total * float(conversion_euros[moneda])
-            data_cryptos.append((moneda, total, conversion))
-
     
-    # Calcular el valor total de la inversión en euros
+    saldos_disp = MovementsDAOsqlite.saldos()#tngo el saldo de mis criptos
 
-    for value in data_cryptos:
-        total_inversion += conversion 
-    
+    url= f'https://rest.coinapi.io/v1/exchangerate/EUR?apikey={app.config.get("API_KEY")}'
+    response = requests.get(url)
+    data = response.json()
+
+    #procesar los datos que me devuelve la consulta y entre los datos y saldos contsruir la lista para pasarsela a jinja2
     
 
-    # Renderizar la plantilla 'status.html' con la información calculada
-    return render_template('status.html', data_cryptos=data_cryptos, conversion_euros=conversion_euros, total_inversion=total_inversion, route=request.path, title='Status')
 
 
 
 
+    
+    return render_template('status.html', saldos_disp=saldos_disp, data=data, title='Status')
+   

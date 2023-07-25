@@ -36,3 +36,31 @@ def get_conversion_euros():
     conn.close()
 
     return conversion_euros
+
+
+
+def saldo(self):
+    lista_saldo= []
+    cryptos = ['EUR', 'BTC', 'ETH', 'BNB', 'ADA', 'DOT', 'XRP', 'SOL', 'USDT', 'MATIC']
+
+    for crypto in cryptos:
+        quantity_from = 0
+        quantity_to = 0
+        lista_to = self.quantity_to(crypto)
+        if lista_to == [(None, None)]:
+            pass
+        else:
+            quantity_to = lista_to[0][1]
+        
+        lista_from = self.quantity_from(crypto)
+        if lista_from == [(None, None)]:
+            pass
+        else:
+            quantityt_from = lista_from[0][1]
+
+        total = quantity_to - quantity_from
+
+        if total != 0 or crypto == "EUR":
+            lista_saldo.append([crypto, total])
+
+    return lista_saldo

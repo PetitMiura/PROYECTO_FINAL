@@ -90,6 +90,39 @@ class MovementsDAOsqlite:
         return lista
     
 
+    
 
+    def saldos():
+        connection = sqlite3.connect("data/movements.db")
+        cur = connection.cursor()
 
+        criptos = ['EUR', 'BTC', 'ETH', 'BNB', 'ADA', 'DOT', 'XRP', 'SOL', 'USDT', 'MATIC']
+        saldos = {}
+        for cripto in criptos:
+            
+            query = """SELECT cantidad_to FROM movements WHERE moneda_to = (?) """
+            cur.execute(query, (cripto,))
+            res = cur.fetchall()
+            
+            if len(res) > 0:
+                total = 0
+                for saldo in res:
+                    total += saldo[0]
+                saldos[cripto] = total
+            else:
+                saldos[cripto] = 0
 
+        
+        for cripto in criptos:
+            
+            query = """SELECT cantidad_from FROM movements WHERE moneda_from = (?) """
+            cur.execute(query, (cripto,))
+            res = cur.fetchall()
+            
+            if len(res) > 0:
+                for saldo in res:
+                    saldos[cripto] -= saldo[0]
+
+        return saldos
+
+                    
