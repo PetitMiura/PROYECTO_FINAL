@@ -92,7 +92,7 @@ def purchase():
                 flash('Error de validación en el formulario.')
 
         except ValueError as e:
-            flash(str(e), 'danger')
+            flash(str(e))
 
     return redirect('/')
 
@@ -106,18 +106,24 @@ def purchase():
 def status():
     
     saldos_disp = MovementsDAOsqlite.saldos()#tngo el saldo de mis criptos
+    try:
+        if saldos_disp:
+            url= f'https://rest.coinapi.io/v1/exchangerate/EUR?apikey={app.config.get("API_KEY")}'
+            response = requests.get(url)
+            data = response.json()
+            conversion = []
+            if response.status_code == 200:
+                for saldo in saldos_disp: #recorro mis saldos
+                    for crypto in data['rates']: #recorro los de la api
+                        if saldo == crypto['asset_id_quote']: #si el saldo coincide con el de la api
+                            res = saldos_disp[saldo] / crypto['rate']
+                            conversion.append([saldo, saldos_disp[saldo], res])    
+                            
+            else:
+                flash('Errores con la api')
+    except ValueError as e:
+        flash(str(e))
+            
 
-    url= f'https://rest.coinapi.io/v1/exchangerate/EUR?apikey={app.config.get("API_KEY")}'
-    response = requests.get(url)
-    data = response.json()
-
-    #procesar los datos que me devuelve la consulta y entre los datos y saldos contsruir la lista para pasarsela a jinja2
-    
-
-
-
-
-
-    
-    return render_template('status.html', saldos_disp=saldos_disp, data=data, title='Status')
-   
+    return render_template('status.html', saldos_disp=saldos_disp, conversion=conversion, data=data, title='Status')
+ 

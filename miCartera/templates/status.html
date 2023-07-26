@@ -10,13 +10,13 @@
                     <th>Cantidad</th>
                     <th>Valor en euros</th>
                 </tr>
-                {% if saldos_disp %}
-                      {% for moneda, cantidad in saldos_disp.items() %}
-                      {% if cantidad > 0 %}
+                {% if saldos_disp[saldo] != 0 %}
+                      {% for moneda in conversion %}
+                      {% if moneda[0] != 'EUR' and moneda[1] > 0 %}
                         <tr>
-                            <td>{{ moneda }}</td>
-                            <td>{{ cantidad }}</td>
-                            <td>  </td>
+                            <td>{{ moneda[0] }}</td>
+                            <td>{{ moneda[1] }}</td>
+                            <td>{{ moneda[2] }}</td>
                         </tr>
                         {% endif %}
                     {% endfor %}
