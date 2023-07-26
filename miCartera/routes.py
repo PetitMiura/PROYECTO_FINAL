@@ -24,6 +24,7 @@ def index():
 @app.route('/compra', methods=['GET', 'POST'])
 def purchase():
     form = CompraForm()
+    saldos_disp = MovementsDAOsqlite.saldos()
 
     if request.method == 'GET':
         session['from_currency'] = ""
@@ -39,27 +40,31 @@ def purchase():
                 moneda_from = form.from_currency.data
                 cantidad_from = form.cantidad_from.data
                 moneda_to = form.to_currency.data
+                if cantidad_from <= saldos_disp[moneda_from] or moneda_from == 'EUR':
+                    # Consulta a la API de CoinAPI para obtener la tasa de conversión
+                    url = f'https://rest.coinapi.io/v1/exchangerate/{moneda_from}/{moneda_to}?apikey={app.config.get("API_KEY")}'
+                    response = requests.get(url)
+                    data = response.json()
+                    if response.status_code == 200:
 
-                # Consulta a la API de CoinAPI para obtener la tasa de conversión
-                url = f'https://rest.coinapi.io/v1/exchangerate/{moneda_from}/{moneda_to}?apikey={app.config.get("API_KEY")}'
-                response = requests.get(url)
-                data = response.json()
-                if response.status_code == 200:
+                        if 'rate' in data:
+                            rate = data['rate']
+                            cantidad_to = cantidad_from * rate  # Calcula la cantidad_to basada en la tasa de conversión
+                            form.cantidad_to.data = cantidad_to  # Asigna el valor calculado a form.cantidad_to.data
 
-                    if 'rate' in data:
-                        rate = data['rate']
-                        cantidad_to = cantidad_from * rate  # Calcula la cantidad_to basada en la tasa de conversión
-                        form.cantidad_to.data = cantidad_to  # Asigna el valor calculado a form.cantidad_to.data
-
-                        # Almacenar los datos del primer POST en la sesión
-                        session['from_currency'] = moneda_from
-                        session['cantidad_from'] = cantidad_from
-                        session['to_currency'] = moneda_to
-                        session['cantidad_to'] = cantidad_to  # Almacena también cantidad_to en la sesión
-                        # Renderiza la plantilla "compra.html" con el formulario actualizado y la cantidad convertida en el contexto
+                            # Almacenar los datos del primer POST en la sesión
+                            session['from_currency'] = moneda_from
+                            session['cantidad_from'] = cantidad_from
+                            session['to_currency'] = moneda_to
+                            session['cantidad_to'] = cantidad_to  # Almacena también cantidad_to en la sesión
+                            # Renderiza la plantilla "compra.html" con el formulario actualizado y la cantidad convertida en el contexto
+                            return render_template('compra.html', form=form, route=request.path, title='Compra')
+                    else:
+                        flash(data["error"])
                         return render_template('compra.html', form=form, route=request.path, title='Compra')
+                
                 else:
-                    flash(data["error"])
+                    flash('No tienes suficientes monedas para vender/tradear')
                     return render_template('compra.html', form=form, route=request.path, title='Compra')
             else:
                 for msg, valor in form.errors.items():
@@ -106,6 +111,8 @@ def purchase():
 def status():
     
     saldos_disp = MovementsDAOsqlite.saldos()#tngo el saldo de mis criptos
+    hay_saldo = any(value != 0 for value in saldos_disp.values())
+    
     try:
         if saldos_disp:
             url= f'https://rest.coinapi.io/v1/exchangerate/EUR?apikey={app.config.get("API_KEY")}'
@@ -118,12 +125,27 @@ def status():
                         if saldo == crypto['asset_id_quote']: #si el saldo coincide con el de la api
                             res = saldos_disp[saldo] / crypto['rate']
                             conversion.append([saldo, saldos_disp[saldo], res])    
+            
+                total_inversion = sum(moneda[2] for moneda in conversion if moneda[0] != 'EUR' and moneda[1] > 0) 
+                precio_compra = MovementsDAOsqlite.precio_compra_euros()
+                #precio_compra=saldos_disp['EUR']
                             
+            elif response.status_code == 400:
+                flash('Error en la peticion')
+            elif response.status_code == 401:
+                flash('Clave api incorrecta')
+            elif response.status_code == 403:
+                flash('Tu API KEY no tiene suficientes privilegios para acceder a este recurso')
+            elif response.status_code == 429:
+                flash('Excedido el limite de peticiones diarias con esta API KEY')
+            elif response.status_code == 550:
+                flash('Sin datos sobre esta peticion')
             else:
-                flash('Errores con la api')
+                flash('Errores varios con la api')
+
     except ValueError as e:
         flash(str(e))
             
 
-    return render_template('status.html', saldos_disp=saldos_disp, conversion=conversion, data=data, title='Status')
+    return render_template('status.html', saldos_disp=saldos_disp, conversion=conversion, hay_saldo=hay_saldo, total_inversion=total_inversion, precio_compra=precio_compra, data=data, route=request.path, title='Status')
  

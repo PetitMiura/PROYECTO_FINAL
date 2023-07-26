@@ -10,13 +10,13 @@
                     <th>Cantidad</th>
                     <th>Valor en euros</th>
                 </tr>
-                {% if saldos_disp[saldo] != 0 %}
+                {% if hay_saldo %}
                       {% for moneda in conversion %}
                       {% if moneda[0] != 'EUR' and moneda[1] > 0 %}
                         <tr>
                             <td>{{ moneda[0] }}</td>
                             <td>{{ moneda[1] }}</td>
-                            <td>{{ moneda[2] }}</td>
+                            <td>{{ moneda[2]|round(2) }}</td>
                         </tr>
                         {% endif %}
                     {% endfor %}
@@ -28,11 +28,12 @@
                 {% endif %}
             </table>
         </form>
-        <div class="container">
-            <div class="container1">
-                <p>Valor total de la inversión en euros: </p>
-                <p>Precio de compra: </p>
-                <p>Resultado de la inversión: </p>
+        <div class="container">            
+            <div class="container1">                
+                <p>Valor total de la inversión en euros: {{ total_inversion|round(2) }} - €</p>
+                <p>Precio de compra: {{ precio_compra|round(2)}} - €</p>
+                {% set resultado_inversion = total_inversion + precio_compra %}
+                <p>Resultado de la inversión:  {{ resultado_inversion|round(2) }} - €</p>
             </div>
         </div>
     </section>

@@ -124,5 +124,25 @@ class MovementsDAOsqlite:
                     saldos[cripto] -= saldo[0]
 
         return saldos
+    
+    def precio_compra_euros():
+        connection = sqlite3.connect("data/movements.db")
+        cur = connection.cursor()
+
+        query = """SELECT SUM(cantidad_to) FROM movements WHERE moneda_to = 'EUR'"""
+        cur.execute(query)
+        result = cur.fetchone()
+        total_compra = result[0] if result else 0
+
+        query = """SELECT SUM(cantidad_from) FROM movements WHERE moneda_from = 'EUR'"""
+        cur.execute(query)
+        result = cur.fetchone()
+        total_venta = result[0] if result else 0
+
+        connection.close()
+
+        return total_compra - total_venta
+
+    
 
                     
