@@ -89,9 +89,6 @@ class MovementsDAOsqlite:
         conn.close()
         return lista
     
-
-    
-
     def saldos():
         connection = sqlite3.connect("data/movements.db")
         cur = connection.cursor()

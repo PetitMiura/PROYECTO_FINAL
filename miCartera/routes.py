@@ -27,12 +27,14 @@ def purchase():
     saldos_disp = MovementsDAOsqlite.saldos()
 
     if request.method == 'GET':
-        session['from_currency'] = ""
-        session['cantidad_from'] = 0
-        session['to_currency'] = ""
-        session['cantidad_to'] = 0
-        return render_template('compra.html', form=form, route=request.path, title='Compra')
-    
+        try:
+            session['from_currency'] = ""
+            session['cantidad_from'] = 0
+            session['to_currency'] = ""
+            session['cantidad_to'] = 0
+            return render_template('compra.html', form=form, route=request.path, title='Compra')    
+        except ValueError as e:
+            flash(str(e))    
 
     elif form.calculate.data:
         try:
@@ -101,12 +103,6 @@ def purchase():
 
     return redirect('/')
 
-
-
-
-
-
-
 @app.route('/status', methods=['GET'])
 def status():
     
@@ -146,6 +142,5 @@ def status():
     except ValueError as e:
         flash(str(e))
             
-
     return render_template('status.html', saldos_disp=saldos_disp, conversion=conversion, hay_saldo=hay_saldo, total_inversion=total_inversion, precio_compra=precio_compra, data=data, route=request.path, title='Status')
  

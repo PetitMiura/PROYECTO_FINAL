@@ -14,9 +14,9 @@ Permite registrar compras simuladas de criptomonedas de entre las siguientes
 
 ## Funcionalidad de la aplicación
 Tiene tres pantallas básicas.
-- Pantalla resumen con todos los movimientos realizados (sin paginación).
-- Pantalla de compra-venta de criptomonedas
-- Pantalla de estado de la inversión. Mostrará el dinero que representan las criptomonedas de las que aún tenemos saldo, su coste real en euros y su valor en euros al momento de realizar la consulta.
+- Pantalla index con todos los movimientos realizados (sin paginación).
+- Pantalla de compra de criptomonedas
+- Pantalla de status de la inversión. Mostrará el dinero que representan las criptomonedas de las que aún tenemos saldo, su coste real en euros y su valor en euros al momento de realizar la consulta.
 
 ## Instalación
 
