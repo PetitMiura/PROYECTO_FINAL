@@ -86,7 +86,7 @@ th {
 
 /* Estilos para las filas al pasar el cursor por encima */
 tr:hover {
-    background-color: #7ee256; /* Color de fondo verde claro */
+    background-color: #4f84f5; /* Color de fondo verde claro */
 }
 
 
@@ -137,29 +137,57 @@ tr:hover {
     margin-right: 10px;
 }
 
-/* Agregado de estilos para el botón de calcular conversión */
-#calcular {
-    background-image: url("/static/images/image.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    padding-left: 30px;
 
-}
 
 body {
-    background-image: url("/static/images/fondo5.png");
+    background-image: url("/static/images/fondo3.png");
     /* Ajustar la imagen de fondo */
     background-size: auto;
-    background-position: left;
-    background-repeat: none ;
+    background-position: center;
+    background-repeat: no-repeat ;
     
 
   }
 
 h1 {
-    color: #39e903; /* Color del texto */
+    color: #e6bf11; /* Color del texto */
     font-size: 48px; /* Tamaño de fuente */
     font-weight: bold; /* Texto en negrita */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra de texto */
 }
+
+.custom-select-class {
+    width: 200px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    /* Agrega cualquier otro estilo que desees */
+
+    /* Texto en blanco */
+    color: black;
+
+    /* Fondo del desplegable con color personalizado */
+    background-color: #e6bf11; /* Puedes cambiar el color a tu elección */
+}
+
+/* Estilos para el desplegable (opciones) */
+.custom-select-class option {
+    /* Cambiar el color del texto de las opciones */
+    color: #333; /* Puedes ajustar el color según tus preferencias */
+}
+p {
+    color: #000000; /* Color del texto */
+    font-size:24px; /* Tamaño de fuente */
+    font-weight: bold; /* Texto en negrita */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra de texto */
+}
+
+.custom-select-class1 {
+    color: #000000; /* Color del texto */
+    font-size:24px; /* Tamaño de fuente */
+    font-weight: bold; /* Texto en negrita */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra de texto */
+}
+

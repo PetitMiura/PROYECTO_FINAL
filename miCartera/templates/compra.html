@@ -12,17 +12,17 @@
             
         <div id="form-container">
             <div class="form-column">
-                {{ form.from_currency.label }}
-                {{ form.from_currency }}
-                {{ form.cantidad_from.label}}
-                {{ form.cantidad_from }}
+                {{ form.from_currency.label(class="custom-select-class1") }}
+                {{ form.from_currency(class="custom-select-class") }}
+                {{ form.cantidad_from.label(class="custom-select-class1")}}
+                {{ form.cantidad_from(class="custom-select-class") }}
                 
                 {{ form.calculate }}
                 
             </div>
             <div class="form-column">
-                {{ form.to_currency.label }}
-                {{ form.to_currency }}
+                {{ form.to_currency.label(class="custom-select-class1") }}
+                {{ form.to_currency(class="custom-select-class") }}
                     
                 {% if form.cantidad_to.data %}
                     <p>Cantidad: {{ form.cantidad_to.data }} - {{ form.to_currency.data }}</p>
