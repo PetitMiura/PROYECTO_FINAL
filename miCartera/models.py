@@ -89,8 +89,8 @@ class MovementsDAOsqlite:
         conn.close()
         return lista
     
-    def saldos():
-        connection = sqlite3.connect("data/movements.db")
+    def saldos(self):
+        connection = sqlite3.connect(self.path)
         cur = connection.cursor()
 
         criptos = ['EUR', 'BTC', 'ETH', 'BNB', 'ADA', 'DOT', 'XRP', 'SOL', 'USDT', 'MATIC']
@@ -122,19 +122,27 @@ class MovementsDAOsqlite:
 
         return saldos
     
-    def precio_compra_euros():
-        connection = sqlite3.connect("data/movements.db")
+    def precio_compra_euros(self):
+        total_compra = 0
+        total_venta = 0
+        connection = sqlite3.connect(self.path)
         cur = connection.cursor()
 
         query = """SELECT SUM(cantidad_to) FROM movements WHERE moneda_to = 'EUR'"""
         cur.execute(query)
         result = cur.fetchone()
-        total_compra = result[0] if result else 0
+        if result == (None,):
+            pass
+        else:
+            total_compra = result[0]
 
         query = """SELECT SUM(cantidad_from) FROM movements WHERE moneda_from = 'EUR'"""
         cur.execute(query)
         result = cur.fetchone()
-        total_venta = result[0] if result else 0
+        if result == (None,):
+            pass
+        else:
+            total_venta = result[0]
 
         connection.close()
 

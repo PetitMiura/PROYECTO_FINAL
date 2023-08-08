@@ -16,15 +16,13 @@ def index():
         movements = dao.get_all()  # Obtener todos los movimientos de la base de datos
         form = CompraForm()  # Crear una instancia del formulario
         return render_template('index.html', movements=movements, route=request.path, title='Index')
-    except ValueError as e:
-        flash('Su base de datos esta inoperativa')
+    except (ValueError, sqlite3.OperationalError) as e:
         flash(str(e))
-        return render_template('index.html', movements=movements, route=request.path, title='Index')
+        return render_template('index.html', movements=0, route=request.path, title='Index')
 
 @app.route('/compra', methods=['GET', 'POST'])
 def purchase():
-    form = CompraForm()
-    saldos_disp = MovementsDAOsqlite.saldos()
+    form = CompraForm()  
 
     if request.method == 'GET':
         try:
@@ -33,11 +31,13 @@ def purchase():
             session['to_currency'] = ""
             session['cantidad_to'] = 0
             return render_template('compra.html', form=form, route=request.path, title='Compra')    
-        except ValueError as e:
-            flash(str(e))    
+        except (ValueError, sqlite3.OperationalError) as e:
+            flash(str(e))
+            return render_template('compra.html', route=request.path, title='Compra')    
 
     elif form.calculate.data:
         try:
+            saldos_disp = dao.saldos()
             if form.validate_on_submit():
                 moneda_from = form.from_currency.data
                 cantidad_from = form.cantidad_from.data
@@ -74,7 +74,7 @@ def purchase():
                 return render_template('compra.html', form=form, route=request.path, title='Compra')
 
 
-        except ValueError as e:
+        except (ValueError, sqlite3.OperationalError) as e:
             flash(str(e))
 
     else:
@@ -98,18 +98,17 @@ def purchase():
             else:
                 flash('Error de validación en el formulario.')
 
-        except ValueError as e:
+        except (ValueError, sqlite3.OperationalError) as e:
             flash(str(e))
 
     return redirect('/')
 
 @app.route('/status', methods=['GET'])
 def status():
-    
-    saldos_disp = MovementsDAOsqlite.saldos()#tngo el saldo de mis criptos
-    hay_saldo = any(value != 0 for value in saldos_disp.values())
-    
     try:
+        saldos_disp = dao.saldos()#tngo el saldo de mis criptos
+        hay_saldo = any(value != 0 for value in saldos_disp.values())
+    
         if saldos_disp:
             url= f'https://rest.coinapi.io/v1/exchangerate/EUR?apikey={app.config.get("API_KEY")}'
             response = requests.get(url)
@@ -123,7 +122,7 @@ def status():
                             conversion.append([saldo, saldos_disp[saldo], res])    
             
                 total_inversion = sum(moneda[2] for moneda in conversion if moneda[0] != 'EUR' and moneda[1] > 0) 
-                precio_compra = MovementsDAOsqlite.precio_compra_euros()
+                precio_compra = dao.precio_compra_euros()
                 #precio_compra=saldos_disp['EUR']
                             
             elif response.status_code == 400:
@@ -139,8 +138,11 @@ def status():
             else:
                 flash('Errores varios con la api')
 
-    except ValueError as e:
+    except (ValueError, sqlite3.OperationalError) as e:
         flash(str(e))
+        return render_template('status.html', hay_saldo=0, total_inversion=0, precio_compra=0, route=request.path, title='Status')
+
+        
             
     return render_template('status.html', saldos_disp=saldos_disp, conversion=conversion, hay_saldo=hay_saldo, total_inversion=total_inversion, precio_compra=precio_compra, data=data, route=request.path, title='Status')
  
