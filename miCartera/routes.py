@@ -72,8 +72,7 @@ def purchase():
                 for msg, valor in form.errors.items():
                     flash(valor[0])
                 return render_template('compra.html', form=form, route=request.path, title='Compra')
-
-
+            
         except (ValueError, sqlite3.OperationalError) as e:
             flash(str(e))
 
@@ -140,9 +139,7 @@ def status():
 
     except (ValueError, sqlite3.OperationalError) as e:
         flash(str(e))
-        return render_template('status.html', hay_saldo=0, total_inversion=0, precio_compra=0, route=request.path, title='Status')
-
-        
+        return render_template('status.html', hay_saldo=0, total_inversion=0, precio_compra=0, route=request.path, title='Status')        
             
     return render_template('status.html', saldos_disp=saldos_disp, conversion=conversion, hay_saldo=hay_saldo, total_inversion=total_inversion, precio_compra=precio_compra, data=data, route=request.path, title='Status')
  
