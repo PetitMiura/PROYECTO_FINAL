@@ -1,5 +1,6 @@
 from datetime import datetime
 import sqlite3, requests
+from miCartera import app
 
 
 
@@ -149,5 +150,46 @@ class MovementsDAOsqlite:
         return total_compra - total_venta
 
     
+class APICall:
+    def __init__(self):
+        self.api_key = app.config.get("API_KEY")
 
-                    
+    def get_exchange_rate(self, from_currency, to_currency):
+        url = f'https://rest.coinapi.io/v1/exchangerate/{from_currency}/{to_currency}?apikey={self.api_key}'
+        response = requests.get(url)
+        data = response.json()
+        
+        if response.status_code == 200 and 'rate' in data:
+            return data['rate']
+        elif response.status_code == 400:
+            raise ValueError('Error en la petición')
+        elif response.status_code == 401:
+            raise ValueError('Clave API incorrecta')
+        elif response.status_code == 403:
+            raise ValueError('API KEY no tiene suficientes privilegios')
+        elif response.status_code == 429:
+            raise ValueError('Excedido el límite de peticiones diarias')
+        elif response.status_code == 550:
+            raise ValueError('Sin datos disponibles')
+        else:
+            return None
+
+    def get_eur_exchange_rate(self):
+        url = f'https://rest.coinapi.io/v1/exchangerate/EUR?apikey={self.api_key}'
+        response = requests.get(url)
+        data = response.json()
+        
+        if response.status_code == 200 and 'rates' in data:
+            return data['rates']
+        elif response.status_code == 400:
+            raise ValueError('Error en la petición')
+        elif response.status_code == 401:
+            raise ValueError('Clave API incorrecta')
+        elif response.status_code == 403:
+            raise ValueError('API KEY no tiene suficientes privilegios')
+        elif response.status_code == 429:
+            raise ValueError('Excedido el límite de peticiones diarias')
+        elif response.status_code == 550:
+            raise ValueError('Sin datos disponibles')
+        else:
+            return None
